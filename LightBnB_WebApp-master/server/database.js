@@ -101,6 +101,12 @@ exports.getAllReservations = getAllReservations;
     queryString += `WHERE city LIKE $${queryParams.length} `;
   }
 
+  if (options.minimum_price_per_night) {
+    queryParams.push(`${options.minimum_price_per_night}`);
+    queryString += `${checkParams()} cost_per_night >= $${queryParams.length}`;
+  } 
+
+
   // 4
   queryParams.push(limit);
   queryString += `
