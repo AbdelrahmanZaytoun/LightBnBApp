@@ -105,8 +105,15 @@ exports.getAllReservations = getAllReservations;
     queryParams.push(`${options.minimum_price_per_night}`);
     queryString += `${checkParams()} cost_per_night >= $${queryParams.length}`;
   } 
-
-
+  if (options.maximum_price_per_night) {
+    queryParams.push(`${options.maximum_price_per_night}`);
+    queryString += `${checkParams()} cost_per_night <= $${queryParams.length}`;
+  } 
+  
+  if (options.rating) {
+    queryParams.push(`${options.rating}`);
+    queryString += `${checkParams()} AVG(rating) >= $${queryParams.length}`;
+  }
   // 4
   queryParams.push(limit);
   queryString += `
