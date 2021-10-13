@@ -11,10 +11,10 @@ const { Pool } = require('pg');  const pool = new Pool({   user: 'vagrant',   pa
  */
 const getUserWithEmail = function(email) {
 
-  // return pool.query(`SELECT * FROM users WHERE users.email = $1;`,[email])
- return pool.query(`SELECT * FROM users WHERE users.email = ${email};`)
+  return pool.query(`SELECT * FROM users WHERE users.email = $1;`,[email])
+//  return pool.query(`SELECT * FROM users WHERE users.email = ${email};`)
  .then(res => {
-   return res.rows
+   return res.rows[0]
  })
  .catch(err => console.error('query error', err.stack));
 
@@ -44,7 +44,7 @@ exports.getUserWithId = getUserWithId;
  * @return {Promise<{}>} A promise to the user.
  */
 const addUser =  function(user) {
-return pool.query(`INSERT INTO users (name, email, password) VALUES (${user.name},${user.email},${user.password})`)
+return pool.query(`INSERT INTO users (name, email, password) VALUES (${user.name},${user.email},${user.password}) RETURNING * ; `)
 .then(res => {
   return res.rows
 })
