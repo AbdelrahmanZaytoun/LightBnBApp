@@ -45,15 +45,28 @@ $(() => {
     updateHeader(json.user);
   });
 
+  // $("header").on("click", '.my_reservations_button', function() {
+  //   propertyListings.clearListings();
+  //   getAllReservations()
+  //     .then(function(json) {
+  //       propertyListings.addProperties(json.reservations, true);
+  //       views_manager.show('listings');
+  //     })
+  //     .catch(error => console.error(error));
+  // });
+
   $("header").on("click", '.my_reservations_button', function() {
     propertyListings.clearListings();
     getAllReservations()
       .then(function(json) {
-        propertyListings.addProperties(json.reservations, true);
+        propertyListings.addProperties(json.reservations, { upcoming: false });
         views_manager.show('listings');
       })
       .catch(error => console.error(error));
   });
+
+
+
   $("header").on("click", '.my_listing_button', function() {
     propertyListings.clearListings();
     getAllListings(`owner_id=${currentUser.id}`)
@@ -92,4 +105,18 @@ $(() => {
     views_manager.show('newProperty');
   });
 
+});
+
+$("header").on("click", '.my_reservations_button', function() {
+  propertyListings.clearListings();
+  getFulfilledReservations()
+    .then(function(json) {
+      propertyListings.addProperties(json.reservations, { upcoming: false });
+      getUpcomingReservations()
+      .then(json => {
+        propertyListings.addProperties(json.reservations, { upcoming: true })
+      })
+      views_manager.show('listings');
+    })
+    .catch(error => console.error(error));
 });

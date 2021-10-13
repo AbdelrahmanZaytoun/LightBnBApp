@@ -52,3 +52,19 @@ const submitProperty = function(data) {
     data,
   });
 }
+
+const submitReservation = function(data) {
+  return $.ajax({
+    method: "POST",
+    url: "/api/reservations",
+    data,
+  })
+}
+
+
+function getUpcomingReservations() {
+  let url = "/api/reservations/upcoming";
+  return $.ajax({
+    url,
+  });
+}

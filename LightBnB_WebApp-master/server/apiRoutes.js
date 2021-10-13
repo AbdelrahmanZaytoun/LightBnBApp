@@ -37,3 +37,30 @@ module.exports = function(router, database) {
 
   return router;
 }
+
+
+
+router.get('/reservations/upcoming', (req, res) => {
+  const userId = req.session.userId;
+  if (!userId) {
+    res.error("💩");
+    return;      
+  }
+  database.getUpcomingReservations(userId)
+  .then(reservations => res.send({ reservations }))
+  .catch(e => {
+    console.error(e);
+    res.send(e);
+  })
+})
+
+
+router.get('/reservations/:reservation_id', (req, res) => {
+  const reservationId = req.params.reservation_id;
+  database.getIndividualReservation(reservationId)
+  .then(reservation => res.send(reservation))
+  .catch(e => {
+    console.error(e);
+    res.send(e);
+  })
+})
