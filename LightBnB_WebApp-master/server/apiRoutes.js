@@ -64,3 +64,28 @@ router.get('/reservations/:reservation_id', (req, res) => {
     res.send(e);
   })
 })
+
+
+router.post('/reservations/:reservationId', (req, res) => {
+  const reservationId = req.params.reservationId;
+  database.updateReservation({...req.body, reservation_id: reservationId})
+  .then(reservation => {
+    res.send(reservation)
+  })
+})
+
+
+
+router.delete('/reservations/:reservationId', (req, res) => {
+  const reservationId = req.params.reservationId;
+  database.deleteReservation(reservationId);
+})
+
+
+router.get('/reviews/:propertyId', (req, res) => {
+  const propertyId = req.params.propertyId
+  database.getReviewsByProperty(propertyId)
+  .then(reviews => {
+    res.send(reviews);
+  })
+})
